@@ -12,10 +12,9 @@ export const product = {
     "Lavable à 30°",
     "Fabriqué avec amour en France"
   ],
-  shipping: "Livraison disponible en Mondial Relay et La Poste. Informations de livraison à renseigner lors du paiement."
+  shipping: "Livraison en point relais Mondial Relay. Informations à renseigner lors du paiement."
 };
 
 export const shippingMethods = [
   { id: "mondial_relay", name: "Mondial Relay", price: 3.90, description: "Livraison en point relais sous 3-5 jours ouvrés" },
-  { id: "la_poste", name: "La Poste (Colissimo)", price: 5.90, description: "Livraison à domicile sous 2-3 jours ouvrés" }
 ];

@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: 'Lato', var(--app-font-sans);
+  --font-serif: 'Playfair Display', var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* LIGHT MODE ONLY - as per requirement for warm aesthetic */
+:root {
+  /* Warm cream #FDFAF7 */
+  --background: 30 40% 98%;
+  /* Very dark plum for text */
+  --foreground: 316 29% 20%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 316 29% 20%;
+  --card-border: 346 30% 90%;
+  
+  --popover: 30 40% 98%;
+  --popover-foreground: 316 29% 20%;
+  --popover-border: 346 30% 90%;
+  
+  /* Deep plum #6B3B5E */
+  --primary: 316 29% 33%;
+  --primary-foreground: 30 40% 98%;
+  
+  /* Dusty rose #C4788A */
+  --secondary: 346 38% 62%;
+  --secondary-foreground: 30 40% 98%;
+  
+  /* Mauve tinted muted background */
+  --muted: 321 21% 94%;
+  --muted-foreground: 316 20% 45%;
+  
+  /* Soft gold #E5C158 */
+  --accent: 45 74% 62%;
+  --accent-foreground: 316 29% 20%;
+  
+  --destructive: 0 60% 50%;
+  --destructive-foreground: 0 0% 100%;
+  
+  --border: 346 30% 90%;
+  --input: 346 30% 90%;
+  --ring: 316 29% 33%;
+  
+  --sidebar: 30 40% 98%;
+  --sidebar-foreground: 316 29% 20%;
+  --sidebar-border: 346 30% 90%;
+  --sidebar-primary: 316 29% 33%;
+  --sidebar-primary-foreground: 30 40% 98%;
+  --sidebar-accent: 346 38% 62%;
+  --sidebar-accent-foreground: 30 40% 98%;
+  --sidebar-ring: 316 29% 33%;
+  
+  --radius: 0.5rem;
+  
+  --app-font-sans: 'Lato', sans-serif;
+  --app-font-serif: 'Playfair Display', serif;
+  --app-font-mono: monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}

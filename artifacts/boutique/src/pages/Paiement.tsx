@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Check, ShieldCheck, Lock, CreditCard, Truck } from 'lucide-react';
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider, PayPalButtons, FUNDING } from "@paypal/react-paypal-js";
 
 import { useCart } from '../context/CartContext';
 import { shippingMethods } from '../data/products';
@@ -266,7 +266,8 @@ export default function Paiement() {
                   "intent": "capture"
                 }}>
                   <PayPalButtons 
-                    style={{ layout: "vertical", shape: "pill", color: "gold" }}
+                    fundingSource={FUNDING.CARD}
+                    style={{ layout: "vertical", shape: "pill" }}
                     disabled={!isFormValid}
                     forceReRender={[finalTotal]}
                     createOrder={(data, actions) => {
@@ -307,7 +308,7 @@ export default function Paiement() {
 
               <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs text-muted-foreground pt-6 border-t border-border">
                 <div className="flex items-center gap-1"><Lock className="w-3 h-3" /> Transaction cryptée SSL</div>
-                <div className="flex items-center gap-1"><ShieldCheck className="w-3 h-3" /> Protection PayPal</div>
+                <div className="flex items-center gap-1"><ShieldCheck className="w-3 h-3" /> Paiement sécurisé</div>
               </div>
             </div>
 

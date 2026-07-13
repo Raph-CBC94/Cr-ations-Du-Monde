@@ -13,6 +13,8 @@ Créez un repo public vide (sans README) sur GitHub et poussez le code.
 3. Choisissez votre repo GitHub
 4. Render détectera automatiquement `render.yaml`
 
+> Note : le site frontend est configuré comme un service `web` avec `runtime: static`, qui est la syntaxe correcte pour les blueprints Render.
+
 ## 3. Configurer les variables d'environnement
 
 Pendant le setup, Render demandera les variables marquées `sync: false` :

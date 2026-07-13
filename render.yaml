@@ -21,7 +21,7 @@ services:
       - key: RESEND_API_KEY
         sync: false
 
-  - type: static
+  - type: web
     name: creations-du-monde-web
     runtime: static
     region: frankfurt

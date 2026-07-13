@@ -84,9 +84,11 @@ export default function Paiement() {
   const discountAmount = (subtotalWithShipping * discountPct) / 100;
   const finalTotal = Math.max(0, subtotalWithShipping - discountAmount);
 
+  const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
+
   const sendNotification = async (overrides?: { paypalOrderId?: string }) => {
     const data = formData || form.getValues();
-    await fetch('/api/notify-order', {
+    await fetch(`${API_BASE_URL}/api/notify-order`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

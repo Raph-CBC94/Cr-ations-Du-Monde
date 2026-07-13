@@ -25,7 +25,12 @@ app.use(
     },
   }),
 );
-app.use(cors());
+const allowedOrigins = process.env["ALLOWED_ORIGINS"] ? process.env["ALLOWED_ORIGINS"].split(",") : ["*"];
+app.use(cors({
+  origin: allowedOrigins.includes("*") ? true : allowedOrigins,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

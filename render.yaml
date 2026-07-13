@@ -24,7 +24,6 @@ services:
   - type: web
     name: creations-du-monde-web
     runtime: static
-    region: frankfurt
     buildCommand: pnpm install && pnpm --filter @workspace/boutique run build
     staticPublishPath: artifacts/boutique/dist/public
     envVars:

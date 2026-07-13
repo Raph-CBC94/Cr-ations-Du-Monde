@@ -1,0 +1,41 @@
+# Render Blueprint : Créations du Monde
+# Déploie automatiquement l'API + le site statique.
+# Prérequis : repo GitHub public connecté à Render.
+
+services:
+  - type: web
+    name: creations-du-monde-api
+    runtime: node
+    region: frankfurt
+    plan: starter
+    buildCommand: pnpm install && pnpm --filter @workspace/api-server run build
+    startCommand: node --enable-source-maps artifacts/api-server/dist/index.mjs
+    healthCheckPath: /api/healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: ALLOWED_ORIGINS
+        value: https://creations-du-monde.onrender.com
+      - key: RESEND_API_KEY
+        sync: false
+
+  - type: static
+    name: creations-du-monde-web
+    runtime: static
+    region: frankfurt
+    buildCommand: pnpm install && pnpm --filter @workspace/boutique run build
+    staticPublishPath: artifacts/boutique/dist/public
+    envVars:
+      - key: VITE_PAYPAL_CLIENT_ID
+        sync: false
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://creations-du-monde-api.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html

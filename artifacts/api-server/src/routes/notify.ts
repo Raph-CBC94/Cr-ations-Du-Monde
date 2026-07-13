@@ -134,20 +134,22 @@ router.post("/notify-order", async (req, res) => {
 </html>`;
 
   try {
-    const { error } = await resend.emails.send({
+    const result = await resend.emails.send({
       from: "Créations du Monde <onboarding@resend.dev>",
       to: ["raphanoute.lecuyer94@gmail.com"],
-      subject: `🛍️ Nouvelle commande — ${customer.firstName} ${customer.lastName} (${total.toFixed(2).replace(".", ",")}€)`,
+      reply_to: customer.email,
+      subject: `Nouvelle commande - ${customer.firstName} ${customer.lastName} - ${total.toFixed(2).replace(".", ",")}EUR`,
       html,
     });
 
-    if (error) {
-      console.error("Resend error:", error);
-      res.status(500).json({ error: error.message });
+    if (result.error) {
+      console.error("Resend error:", JSON.stringify(result.error));
+      res.status(500).json({ error: result.error.message });
       return;
     }
 
-    res.json({ success: true });
+    console.log("Email sent, Resend ID:", result.data?.id);
+    res.json({ success: true, emailId: result.data?.id });
   } catch (err) {
     console.error("Email send failed:", err);
     res.status(500).json({ error: "Échec de l'envoi de l'email" });

@@ -14,13 +14,13 @@ export default function Confirmation() {
       // Optionally clear it so a refresh doesn't keep showing it forever
       // sessionStorage.removeItem('lastOrder');
     } else {
-      // Fallback for demo purposes if someone visits the page directly
+      // Fallback si visite directe
       setOrderData({
-        name: "Léa",
-        email: "lea@exemple.com",
-        address: "123 rue des Fleurs",
-        city: "Paris",
-        shippingName: "La Poste (Colissimo)"
+        name: "",
+        email: "",
+        address: "",
+        city: "",
+        shippingName: "Mondial Relay"
       });
     }
   }, []);
@@ -48,7 +48,7 @@ export default function Confirmation() {
         </h1>
         
         <p className="text-lg text-foreground/80 mb-10 max-w-lg mx-auto leading-relaxed">
-          Votre commande a été confirmée avec succès. Nous préparons votre création avec soin.
+          Votre commande a bien été prise en compte. Nous préparons votre création avec soin.
         </p>
 
         <div className="bg-muted/30 rounded-2xl p-6 text-left mb-10 border border-border/50">
@@ -72,7 +72,7 @@ export default function Confirmation() {
 
         <div className="flex items-center justify-center gap-3 text-sm text-muted-foreground mb-10 bg-accent/20 py-4 px-6 rounded-xl inline-flex mx-auto">
           <Mail className="w-5 h-5 text-accent-foreground" />
-          <span>Un email de confirmation a été envoyé à <strong className="text-primary">{orderData.email}</strong></span>
+          <span>Votre commande a été prise en compte ✓</span>
         </div>
 
         <div className="flex flex-col items-center gap-6">

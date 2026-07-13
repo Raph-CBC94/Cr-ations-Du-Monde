@@ -9,7 +9,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
           
           <div className="flex flex-col items-center md:items-start gap-4">
-            <h3 className="font-serif text-2xl text-primary">Léa Créations</h3>
+            <h3 className="font-serif text-2xl text-primary">Créations du Monde</h3>
             <p className="text-sm text-foreground/70 flex items-center gap-2">
               Fait avec <Heart className="h-4 w-4 text-secondary fill-secondary" /> pour vous redonner confiance.
             </p>
@@ -24,8 +24,8 @@ export const Footer = () => {
 
           <div className="flex flex-col gap-4 items-center md:items-start">
             <h4 className="font-serif text-lg text-primary">Contact & Confiance</h4>
-            <a href="mailto:contact@leacreations.fr" className="text-sm text-foreground/70 hover:text-secondary transition-colors flex items-center gap-2">
-              <Mail className="h-4 w-4" /> contact@leacreations.fr
+            <a href="mailto:raphanoute.lecuyer94@gmail.com" className="text-sm text-foreground/70 hover:text-secondary transition-colors flex items-center gap-2">
+              <Mail className="h-4 w-4" /> raphanoute.lecuyer94@gmail.com
             </a>
             <div className="flex gap-4 mt-2">
               <div className="flex items-center gap-1 text-xs text-foreground/60">
@@ -33,7 +33,7 @@ export const Footer = () => {
               </div>
             </div>
             <div className="text-xs text-foreground/50 mt-4">
-              © {new Date().getFullYear()} Léa Créations. Artisanat Français.
+              © {new Date().getFullYear()} Créations du Monde. Artisanat Français.
             </div>
           </div>
 

@@ -274,7 +274,7 @@ export default function Paiement() {
                         intent: "CAPTURE",
                         purchase_units: [
                           {
-                            description: "Commande Léa Créations",
+                            description: "Commande Créations du Monde",
                             amount: {
                               currency_code: "EUR",
                               value: finalTotal.toFixed(2),

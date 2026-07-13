@@ -21,7 +21,7 @@ export const Navbar = () => {
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="font-serif text-2xl tracking-wide text-primary">
-          Léa Créations
+          Créations du Monde
         </Link>
 
         {/* Desktop Nav */}

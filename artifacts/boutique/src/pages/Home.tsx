@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { Heart, Package, Shield, Truck, Star } from 'lucide-react';
+import { Heart, Package, Shield, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '../components/ProductCard';
 
@@ -120,25 +120,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="py-24 container mx-auto px-4">
-        <h2 className="font-serif text-3xl md:text-4xl text-primary text-center mb-16">Elles l'ont adopté</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { name: "Sophie M.", text: "Ce cache-cou a été mon sauveur après mon opération. La matière est tellement douce sur la cicatrice, on l'oublie complètement. Et le motif fleuri est magnifique !" },
-            { name: "Claire D.", text: "C'est exactement ce que je cherchais. Un accessoire qui ne fait pas médical, mais plutôt féminin et élégant. Le petit bouton cœur est adorable. Merci Léa." },
-            { name: "Amandine T.", text: "Taille parfaite, très confortable, et je peux enfin sortir sans que les regards ne se posent sur mon cou. Un immense merci pour cette belle création." }
-          ].map((review, i) => (
-            <div key={i} className="bg-card border border-border p-8 rounded-2xl shadow-sm relative">
-              <div className="flex text-accent mb-4">
-                {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 fill-current" />)}
-              </div>
-              <p className="text-foreground/80 italic mb-6">"{review.text}"</p>
-              <p className="font-medium text-primary text-sm">— {review.name}</p>
-            </div>
-          ))}
-        </div>
-      </section>
       
       {/* SHIPPING INFO */}
       <section className="py-16 bg-muted border-t border-border/50">

@@ -31,12 +31,17 @@ export default function Paiement() {
   const { items, totalAmount, clearCart } = useCart();
   const [isFormValid, setIsFormValid] = useState(false);
   const [formData, setFormData] = useState<CheckoutFormValues | null>(null);
+  const [freeOrderLoading, setFreeOrderLoading] = useState(false);
 
   const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || "test";
 
-  // Get shipping from URL if present
+  // Read URL params (shipping + promo)
   const searchParams = new URLSearchParams(window.location.search);
   const urlShipping = searchParams.get('shipping');
+  const promoCode = searchParams.get('promo') || '';
+  const discountPct = Number(searchParams.get('discount') || 0);
+  const isFree = discountPct === 100;
+
   const defaultShipping = shippingMethods.find(m => m.id === urlShipping)?.id || shippingMethods[0].id;
 
   const form = useForm<CheckoutFormValues>({
@@ -54,16 +59,13 @@ export default function Paiement() {
     mode: "onChange"
   });
 
-  // Watch form validity to enable PayPal buttons
+  // Watch form validity
   useEffect(() => {
     const subscription = form.watch(() => {
       form.trigger().then((isValid) => {
         setIsFormValid(isValid);
-        if (isValid) {
-          setFormData(form.getValues());
-        } else {
-          setFormData(null);
-        }
+        if (isValid) setFormData(form.getValues());
+        else setFormData(null);
       });
     });
     return () => subscription.unsubscribe();
@@ -78,57 +80,77 @@ export default function Paiement() {
 
   const selectedShippingId = form.watch('shippingMethodId');
   const shippingMethod = shippingMethods.find(m => m.id === selectedShippingId) || shippingMethods[0];
-  const finalTotal = totalAmount + shippingMethod.price;
+  const subtotalWithShipping = totalAmount + shippingMethod.price;
+  const discountAmount = (subtotalWithShipping * discountPct) / 100;
+  const finalTotal = Math.max(0, subtotalWithShipping - discountAmount);
 
-  const onSubmit = (data: CheckoutFormValues) => {
-    // This is handled automatically by the form watcher above
-    // We just prevent default submission behavior
-    setFormData(data);
-    setIsFormValid(true);
-    
-    // Scroll down to paypal buttons smoothly
-    document.getElementById('paypal-section')?.scrollIntoView({ behavior: 'smooth' });
+  const sendNotification = async (overrides?: { paypalOrderId?: string }) => {
+    const data = formData || form.getValues();
+    await fetch('/api/notify-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          address: data.address,
+          postalCode: data.postalCode,
+          city: data.city,
+          country: data.country || 'France',
+        },
+        items: items.map(i => ({ name: i.name, quantity: i.quantity, price: i.price })),
+        shippingMethod: { name: shippingMethod.name, price: shippingMethod.price },
+        subtotal: totalAmount,
+        total: finalTotal,
+        promoCode: promoCode || undefined,
+        paypalOrderId: overrides?.paypalOrderId,
+      }),
+    });
   };
 
-  const handlePayPalApprove = (data: any, actions: any) => {
+  const handleFreeOrder = async () => {
+    const valid = await form.trigger();
+    if (!valid) return;
+    setFreeOrderLoading(true);
+    try {
+      await sendNotification();
+    } catch (e) {
+      console.error('Notification email failed:', e);
+    }
+    const data = form.getValues();
+    clearCart();
+    sessionStorage.setItem('lastOrder', JSON.stringify({
+      name: data.firstName,
+      email: data.email,
+      address: data.address,
+      city: data.city,
+      shippingName: shippingMethod.name,
+    }));
+    setLocation('/confirmation');
+  };
+
+  const onSubmit = (data: CheckoutFormValues) => {
+    setFormData(data);
+    setIsFormValid(true);
+    document.getElementById('payment-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handlePayPalApprove = (_data: any, actions: any) => {
     return actions.order.capture().then(async (details: any) => {
-      // Send notification email
       try {
-        await fetch('/api/notify-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            customer: {
-              firstName: formData?.firstName || details.payer.name.given_name,
-              lastName: formData?.lastName || details.payer.name.surname,
-              email: formData?.email || details.payer.email_address,
-              address: formData?.address || '',
-              postalCode: formData?.postalCode || '',
-              city: formData?.city || '',
-              country: formData?.country || 'France',
-            },
-            items: items.map(i => ({ name: i.name, quantity: i.quantity, price: i.price, image: i.image })),
-            shippingMethod: { name: shippingMethod.name, price: shippingMethod.price },
-            subtotal: totalAmount,
-            total: finalTotal,
-            paypalOrderId: details.id,
-          }),
-        });
+        await sendNotification({ paypalOrderId: details.id });
       } catch (err) {
         console.error('Notification email failed:', err);
       }
-
       clearCart();
-
-      const confirmData = {
+      sessionStorage.setItem('lastOrder', JSON.stringify({
         name: formData?.firstName || details.payer.name.given_name,
         email: formData?.email || details.payer.email_address,
         address: formData?.address,
         city: formData?.city,
-        shippingName: shippingMethod.name
-      };
-
-      sessionStorage.setItem('lastOrder', JSON.stringify(confirmData));
+        shippingName: shippingMethod.name,
+      }));
       setLocation('/confirmation');
     });
   };
@@ -264,71 +286,65 @@ export default function Paiement() {
               </Form>
             </div>
 
-            {/* PayPal Section */}
-            <div id="paypal-section" className={`bg-background rounded-3xl p-6 md:p-8 border border-border shadow-sm transition-opacity duration-500 ${isFormValid ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
+            {/* Payment Section */}
+            <div id="payment-section" className={`bg-background rounded-3xl p-6 md:p-8 border border-border shadow-sm transition-opacity duration-500 ${isFormValid ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
               <h2 className="font-serif text-2xl text-primary mb-2 flex items-center gap-3">
                 <CreditCard className="w-6 h-6 text-secondary" />
-                Paiement Sécurisé
+                {isFree ? 'Commande gratuite 🎁' : 'Paiement Sécurisé'}
               </h2>
               <p className="text-muted-foreground text-sm mb-6 pb-4 border-b border-border">
-                {isFormValid 
-                  ? "Choisissez votre méthode de paiement ci-dessous." 
-                  : "Veuillez remplir correctement vos coordonnées ci-dessus pour débloquer le paiement."}
+                {isFree
+                  ? isFormValid ? "Votre code promo couvre 100% du montant. Confirmez pour finaliser." : "Veuillez remplir vos coordonnées ci-dessus."
+                  : isFormValid ? "Payez par carte bancaire ci-dessous." : "Veuillez remplir correctement vos coordonnées ci-dessus pour débloquer le paiement."}
               </p>
 
-              {paypalClientId === "test" && (
-                <div className="bg-accent/20 border border-accent p-4 rounded-xl mb-6 text-sm text-foreground/80">
-                  <p className="font-medium mb-1">Configuration en cours</p>
-                  <p>Le module de paiement est en mode test. Les transactions ne seront pas débitées.</p>
-                </div>
-              )}
-
-              <div className="min-h-[150px] relative z-0">
-                <PayPalScriptProvider options={{ 
-                  "clientId": paypalClientId,
-                  "currency": "EUR",
-                  "intent": "capture"
-                }}>
-                  <PayPalButtons 
-                    fundingSource={FUNDING.CARD}
-                    style={{ layout: "vertical", shape: "pill" }}
-                    disabled={!isFormValid}
-                    forceReRender={[finalTotal]}
-                    createOrder={(data, actions) => {
-                      return actions.order.create({
-                        intent: "CAPTURE",
-                        purchase_units: [
-                          {
+              {isFree ? (
+                /* FREE ORDER — bypass PayPal */
+                <Button
+                  onClick={handleFreeOrder}
+                  disabled={!isFormValid || freeOrderLoading}
+                  className="w-full h-14 rounded-full bg-green-600 hover:bg-green-700 text-white text-lg font-medium shadow-md"
+                >
+                  {freeOrderLoading ? 'Traitement…' : '✓ Confirmer ma commande gratuite'}
+                </Button>
+              ) : (
+                /* PAID ORDER — card via PayPal */
+                <>
+                  {paypalClientId === "test" && (
+                    <div className="bg-accent/20 border border-accent p-4 rounded-xl mb-6 text-sm text-foreground/80">
+                      <p className="font-medium mb-1">Configuration en cours</p>
+                      <p>Le module de paiement est en mode test. Les transactions ne seront pas débitées.</p>
+                    </div>
+                  )}
+                  <div className="min-h-[150px] relative z-0">
+                    <PayPalScriptProvider options={{ "clientId": paypalClientId, "currency": "EUR", "intent": "capture" }}>
+                      <PayPalButtons
+                        fundingSource={FUNDING.CARD}
+                        style={{ layout: "vertical", shape: "pill" }}
+                        disabled={!isFormValid}
+                        forceReRender={[finalTotal]}
+                        createOrder={(_data, actions) => actions.order.create({
+                          intent: "CAPTURE",
+                          purchase_units: [{
                             description: "Commande Créations du Monde",
                             amount: {
                               currency_code: "EUR",
                               value: finalTotal.toFixed(2),
                               breakdown: {
-                                item_total: {
-                                  currency_code: "EUR",
-                                  value: totalAmount.toFixed(2)
-                                },
-                                shipping: {
-                                  currency_code: "EUR",
-                                  value: shippingMethod.price.toFixed(2)
-                                }
-                              }
+                                item_total: { currency_code: "EUR", value: totalAmount.toFixed(2) },
+                                shipping: { currency_code: "EUR", value: shippingMethod.price.toFixed(2) },
+                              },
                             },
-                            payee: {
-                              email_address: "raphanoute.lecuyer94@gmail.com"
-                            }
-                          }
-                        ]
-                      });
-                    }}
-                    onApprove={handlePayPalApprove}
-                    onError={(err) => {
-                      console.error("PayPal Error:", err);
-                      // Custom toast would go here
-                    }}
-                  />
-                </PayPalScriptProvider>
-              </div>
+                            payee: { email_address: "raphanoute.lecuyer94@gmail.com" },
+                          }],
+                        })}
+                        onApprove={handlePayPalApprove}
+                        onError={(err) => console.error("PayPal Error:", err)}
+                      />
+                    </PayPalScriptProvider>
+                  </div>
+                </>
+              )}
 
               <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs text-muted-foreground pt-6 border-t border-border">
                 <div className="flex items-center gap-1"><Lock className="w-3 h-3" /> Transaction cryptée SSL</div>
@@ -369,12 +385,18 @@ export default function Paiement() {
                   <span>Livraison ({shippingMethod.name})</span>
                   <span>{shippingMethod.price.toFixed(2).replace('.', ',')}€</span>
                 </div>
+                {discountPct > 0 && (
+                  <div className="flex justify-between text-green-600 font-medium">
+                    <span>Code promo ({discountPct}%)</span>
+                    <span>−{discountAmount.toFixed(2).replace('.', ',')}€</span>
+                  </div>
+                )}
               </div>
 
               <div className="pt-6 mt-6 border-t border-border/50 flex justify-between items-end">
                 <span className="font-serif text-lg text-primary">Total à payer</span>
-                <span className="font-serif text-3xl text-primary">
-                  {finalTotal.toFixed(2).replace('.', ',')}€
+                <span className={`font-serif text-3xl ${isFree ? 'text-green-600' : 'text-primary'}`}>
+                  {isFree ? 'GRATUIT' : `${finalTotal.toFixed(2).replace('.', ',')}€`}
                 </span>
               </div>
             </div>

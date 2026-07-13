@@ -91,11 +91,35 @@ export default function Paiement() {
   };
 
   const handlePayPalApprove = (data: any, actions: any) => {
-    return actions.order.capture().then((details: any) => {
-      // Create order success
+    return actions.order.capture().then(async (details: any) => {
+      // Send notification email
+      try {
+        await fetch('/api/notify-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            customer: {
+              firstName: formData?.firstName || details.payer.name.given_name,
+              lastName: formData?.lastName || details.payer.name.surname,
+              email: formData?.email || details.payer.email_address,
+              address: formData?.address || '',
+              postalCode: formData?.postalCode || '',
+              city: formData?.city || '',
+              country: formData?.country || 'France',
+            },
+            items: items.map(i => ({ name: i.name, quantity: i.quantity, price: i.price, image: i.image })),
+            shippingMethod: { name: shippingMethod.name, price: shippingMethod.price },
+            subtotal: totalAmount,
+            total: finalTotal,
+            paypalOrderId: details.id,
+          }),
+        });
+      } catch (err) {
+        console.error('Notification email failed:', err);
+      }
+
       clearCart();
-      
-      // Store checkout data for confirmation page
+
       const confirmData = {
         name: formData?.firstName || details.payer.name.given_name,
         email: formData?.email || details.payer.email_address,
@@ -103,7 +127,7 @@ export default function Paiement() {
         city: formData?.city,
         shippingName: shippingMethod.name
       };
-      
+
       sessionStorage.setItem('lastOrder', JSON.stringify(confirmData));
       setLocation('/confirmation');
     });

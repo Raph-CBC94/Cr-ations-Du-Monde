@@ -93,7 +93,7 @@ router.post("/notify-order", async (req, res) => {
           </tr>
           <tr>
             <td colspan="2" style="padding:10px 0;color:#888;font-size:13px;">Livraison (${shippingMethod.name})</td>
-            <td style="padding:10px 0;text-align:right;color:#5a3e3e;">${shippingMethod.price.toFixed(2).replace(".", ",")}€</td>
+            <td style="padding:10px 0;text-align:right;color:#5a3e3e;">${shippingMethod.price === 0 ? '<span style="color:#22c55e;font-weight:500;">Offerte</span>' : `${shippingMethod.price.toFixed(2).replace(".", ",")}€`}</td>
           </tr>
           <tr style="background:#fdf4ee;border-radius:8px;">
             <td colspan="2" style="padding:12px 10px;font-family:Georgia,serif;font-weight:bold;color:#7d3c5a;font-size:16px;">TOTAL</td>

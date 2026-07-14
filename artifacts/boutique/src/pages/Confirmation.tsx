@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { Check, Heart, Mail, PackageOpen } from 'lucide-react';
+import { Check, Heart, Mail, PackageOpen, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Confirmation() {
@@ -57,9 +57,12 @@ export default function Confirmation() {
             Détails de l'expédition
           </h2>
           <div className="space-y-3 text-sm text-foreground/80">
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2 items-center">
               <span className="text-muted-foreground">Méthode</span>
-              <span className="col-span-2 font-medium text-primary">{orderData.shippingName}</span>
+              <span className="col-span-2 font-medium text-primary flex items-center gap-2">
+                {orderData.shippingName}
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Offerte</span>
+              </span>
             </div>
             {orderData.address && (
               <div className="grid grid-cols-3 gap-2 border-t border-border/30 pt-3">

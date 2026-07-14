@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import { getTotalPrice } from '../data/products';
 
 export interface CartItem {
   id: string;
@@ -61,7 +62,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearCart = () => setItems([]);
 
-  const totalAmount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalAmount = useMemo(() => {
+    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+    return getTotalPrice(totalQuantity);
+  }, [items]);
 
   return (
     <CartContext.Provider value={{ items, addItem, removeItem, updateQty, clearCart, totalAmount }}>

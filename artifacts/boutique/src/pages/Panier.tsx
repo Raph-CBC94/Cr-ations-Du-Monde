@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import { Trash2, Minus, Plus, ArrowRight, ShoppingBag, ShieldCheck, Tag, X, Check } from 'lucide-react';
+import { Trash2, Minus, Plus, ArrowRight, ShoppingBag, ShieldCheck, Tag, X, Check, Gift, Truck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { Button } from '@/components/ui/button';
-import { shippingMethods } from '../data/products';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { SHIPPING_METHOD, getPackSavings } from '../data/products';
 import { Input } from "@/components/ui/input";
 
 const PROMO_CODES: Record<string, { discount: number; label: string }> = {
@@ -15,16 +13,15 @@ const PROMO_CODES: Record<string, { discount: number; label: string }> = {
 
 export default function Panier() {
   const { items, updateQty, removeItem, totalAmount } = useCart();
-  const [selectedShipping, setSelectedShipping] = React.useState<string>(shippingMethods[0].id);
   const [promoInput, setPromoInput] = React.useState('');
   const [appliedPromo, setAppliedPromo] = React.useState<{ code: string; discount: number; label: string } | null>(null);
   const [promoError, setPromoError] = React.useState('');
   const [, setLocation] = useLocation();
 
-  const shippingCost = shippingMethods.find(m => m.id === selectedShipping)?.price || 0;
-  const subtotalWithShipping = totalAmount + (items.length > 0 ? shippingCost : 0);
-  const discountAmount = appliedPromo ? (subtotalWithShipping * appliedPromo.discount) / 100 : 0;
-  const finalTotal = Math.max(0, subtotalWithShipping - discountAmount);
+  const totalQuantity = items.reduce((acc, i) => acc + i.quantity, 0);
+  const packSavings = getPackSavings(totalQuantity);
+  const discountAmount = appliedPromo ? (totalAmount * appliedPromo.discount) / 100 : 0;
+  const finalTotal = Math.max(0, totalAmount - discountAmount);
   const isFree = appliedPromo?.discount === 100;
 
   const applyPromo = () => {
@@ -45,7 +42,7 @@ export default function Panier() {
   };
 
   const handleCheckout = () => {
-    const params = new URLSearchParams({ shipping: selectedShipping });
+    const params = new URLSearchParams();
     if (appliedPromo) {
       params.set('promo', appliedPromo.code);
       params.set('discount', String(appliedPromo.discount));
@@ -169,23 +166,22 @@ export default function Panier() {
               </div>
             </div>
 
-            {/* Livraison */}
+            {/* Offres */}
             <div className="border-t border-border pt-5">
-              <h3 className="font-medium text-primary mb-3">Mode de livraison</h3>
-              <RadioGroup value={selectedShipping} onValueChange={setSelectedShipping} className="space-y-3">
-                {shippingMethods.map((method) => (
-                  <div key={method.id} className="flex items-start space-x-3 border border-border p-3 rounded-xl hover:bg-muted/50 transition-colors">
-                    <RadioGroupItem value={method.id} id={method.id} className="mt-1" />
-                    <div className="flex-1">
-                      <Label htmlFor={method.id} className="font-medium text-primary flex justify-between cursor-pointer">
-                        <span>{method.name}</span>
-                        <span>{method.price.toFixed(2).replace('.', ',')}€</span>
-                      </Label>
-                      <p className="text-xs text-muted-foreground mt-1">{method.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </RadioGroup>
+              <div className="flex items-start gap-3 bg-secondary/5 border border-secondary/20 p-4 rounded-xl">
+                <Gift className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium text-primary">Pack de 3 pour 50€</p>
+                  <p className="text-xs text-muted-foreground mt-1">Économisez 10€ dès 3 cache-cous achetés.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 bg-green-50 border border-green-200 p-4 rounded-xl mt-3">
+                <Truck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium text-green-800">Livraison offerte</p>
+                  <p className="text-xs text-green-700/80 mt-1">{SHIPPING_METHOD.description}</p>
+                </div>
+              </div>
             </div>
 
             {/* Code promo */}
@@ -229,10 +225,12 @@ export default function Panier() {
             {/* Total */}
             <div className="border-t border-border pt-5">
               <div className="space-y-2 text-sm mb-4">
-                <div className="flex justify-between text-foreground/80">
-                  <span>Livraison ({shippingMethods.find(m => m.id === selectedShipping)?.name})</span>
-                  <span>{shippingCost.toFixed(2).replace('.', ',')}€</span>
-                </div>
+                {packSavings > 0 && (
+                  <div className="flex justify-between text-secondary font-medium">
+                    <span>Offre pack de 3</span>
+                    <span>−{packSavings.toFixed(2).replace('.', ',')}€</span>
+                  </div>
+                )}
                 {appliedPromo && (
                   <div className="flex justify-between text-green-600 font-medium">
                     <span>Réduction ({appliedPromo.discount}%)</span>
@@ -245,7 +243,7 @@ export default function Panier() {
                 <div className="text-right">
                   {appliedPromo && (
                     <span className="text-sm text-muted-foreground line-through block">
-                      {subtotalWithShipping.toFixed(2).replace('.', ',')}€
+                      {totalAmount.toFixed(2).replace('.', ',')}€
                     </span>
                   )}
                   <span className={`font-serif text-3xl block ${isFree ? 'text-green-600' : 'text-primary'}`}>

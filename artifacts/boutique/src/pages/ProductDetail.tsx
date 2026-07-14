@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useRoute, Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { Heart, Minus, Plus, ShoppingBag, ShieldCheck, Truck, RefreshCw } from 'lucide-react';
+import { Heart, Minus, Plus, ShoppingBag, ShieldCheck, Truck, RefreshCw, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
 import { useToast } from '@/hooks/use-toast';
-import { product } from '../data/products';
+import { product, PACK_QTY, PACK_PRICE } from '../data/products';
 import {
   Accordion,
   AccordionContent,
@@ -105,6 +105,9 @@ export default function ProductDetail() {
             <div className="text-3xl font-serif text-primary">
               {product.price.toFixed(2).replace('.', ',')}€
             </div>
+            <div className="mt-2 inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium">
+              <span>Pack de {PACK_QTY} : {PACK_PRICE}€ — économisez 10€</span>
+            </div>
           </div>
 
           <p className="text-foreground/80 leading-relaxed mb-8 text-lg">
@@ -143,6 +146,10 @@ export default function ProductDetail() {
                 <ShoppingBag className="mr-2 h-5 w-5" />
                 Ajouter au panier
               </Button>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-secondary mb-4">
+              <Gift className="w-4 h-4" />
+              <span>3 pour 50€ — économisez 10€ dès 3 articles</span>
             </div>
             
             <Button 

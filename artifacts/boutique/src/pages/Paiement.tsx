@@ -7,11 +7,10 @@ import { Check, ShieldCheck, Lock, CreditCard, Truck } from 'lucide-react';
 import { PayPalScriptProvider, PayPalButtons, FUNDING } from "@paypal/react-paypal-js";
 
 import { useCart } from '../context/CartContext';
-import { shippingMethods } from '../data/products';
+import { SHIPPING_METHOD, getPackSavings } from '../data/products';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 const checkoutSchema = z.object({
   firstName: z.string().min(2, "Le prénom est requis"),
@@ -21,7 +20,6 @@ const checkoutSchema = z.object({
   postalCode: z.string().min(4, "Code postal invalide"),
   city: z.string().min(2, "La ville est requise"),
   country: z.string().default("France"),
-  shippingMethodId: z.string(),
 });
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
@@ -35,14 +33,11 @@ export default function Paiement() {
 
   const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || "test";
 
-  // Read URL params (shipping + promo)
+  // Read URL params (promo)
   const searchParams = new URLSearchParams(window.location.search);
-  const urlShipping = searchParams.get('shipping');
   const promoCode = searchParams.get('promo') || '';
   const discountPct = Number(searchParams.get('discount') || 0);
   const isFree = discountPct === 100;
-
-  const defaultShipping = shippingMethods.find(m => m.id === urlShipping)?.id || shippingMethods[0].id;
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -54,7 +49,6 @@ export default function Paiement() {
       postalCode: "",
       city: "",
       country: "France",
-      shippingMethodId: defaultShipping,
     },
     mode: "onChange"
   });
@@ -78,11 +72,10 @@ export default function Paiement() {
     }
   }, [items, setLocation]);
 
-  const selectedShippingId = form.watch('shippingMethodId');
-  const shippingMethod = shippingMethods.find(m => m.id === selectedShippingId) || shippingMethods[0];
-  const subtotalWithShipping = totalAmount + shippingMethod.price;
-  const discountAmount = (subtotalWithShipping * discountPct) / 100;
-  const finalTotal = Math.max(0, subtotalWithShipping - discountAmount);
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const packSavings = getPackSavings(totalQuantity);
+  const discountAmount = (totalAmount * discountPct) / 100;
+  const finalTotal = Math.max(0, totalAmount - discountAmount);
 
   const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
 
@@ -102,7 +95,7 @@ export default function Paiement() {
           country: data.country || 'France',
         },
         items: items.map(i => ({ name: i.name, quantity: i.quantity, price: i.price })),
-        shippingMethod: { name: shippingMethod.name, price: shippingMethod.price },
+        shippingMethod: { name: SHIPPING_METHOD.name, price: SHIPPING_METHOD.price },
         subtotal: totalAmount,
         total: finalTotal,
         promoCode: promoCode || undefined,
@@ -127,7 +120,7 @@ export default function Paiement() {
       email: data.email,
       address: data.address,
       city: data.city,
-      shippingName: shippingMethod.name,
+      shippingName: SHIPPING_METHOD.name,
     }));
     setLocation('/confirmation');
   };
@@ -151,7 +144,7 @@ export default function Paiement() {
         email: formData?.email || details.payer.email_address,
         address: formData?.address,
         city: formData?.city,
-        shippingName: shippingMethod.name,
+        shippingName: SHIPPING_METHOD.name,
       }));
       setLocation('/confirmation');
     });
@@ -252,29 +245,14 @@ export default function Paiement() {
                   )} />
 
                   <div className="pt-6 border-t border-border">
-                    <h3 className="font-medium text-lg text-primary mb-4">Mode de livraison</h3>
-                    <FormField control={form.control} name="shippingMethodId" render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="space-y-3">
-                            {shippingMethods.map((method) => (
-                              <FormItem key={method.id} className="flex items-center space-x-3 space-y-0 border border-border p-4 rounded-xl hover:bg-muted/50 transition-colors [&:has([data-state=checked])]:border-secondary [&:has([data-state=checked])]:bg-secondary/5">
-                                <FormControl>
-                                  <RadioGroupItem value={method.id} />
-                                </FormControl>
-                                <div className="flex-1 w-full">
-                                  <FormLabel className="font-medium text-primary flex justify-between cursor-pointer w-full text-base">
-                                    <span>{method.name}</span>
-                                    <span className="font-serif">{method.price.toFixed(2).replace('.', ',')}€</span>
-                                  </FormLabel>
-                                  <p className="text-sm text-muted-foreground mt-1 font-normal">{method.description}</p>
-                                </div>
-                              </FormItem>
-                            ))}
-                          </RadioGroup>
-                        </FormControl>
-                      </FormItem>
-                    )} />
+                    <h3 className="font-medium text-lg text-primary mb-4">Livraison</h3>
+                    <div className="flex items-start gap-3 bg-green-50 border border-green-200 p-4 rounded-xl">
+                      <Truck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-medium text-green-800">Livraison offerte</p>
+                        <p className="text-sm text-green-700/80 mt-1">{SHIPPING_METHOD.description}</p>
+                      </div>
+                    </div>
                   </div>
 
                   {!isFormValid && (
@@ -334,7 +312,7 @@ export default function Paiement() {
                               value: finalTotal.toFixed(2),
                               breakdown: {
                                 item_total: { currency_code: "EUR", value: totalAmount.toFixed(2) },
-                                shipping: { currency_code: "EUR", value: shippingMethod.price.toFixed(2) },
+                                shipping: { currency_code: "EUR", value: "0.00" },
                               },
                             },
                             payee: { email_address: "raphanoute.lecuyer94@gmail.com" },
@@ -383,9 +361,15 @@ export default function Paiement() {
                   <span>Sous-total</span>
                   <span>{totalAmount.toFixed(2).replace('.', ',')}€</span>
                 </div>
-                <div className="flex justify-between text-foreground/80">
-                  <span>Livraison ({shippingMethod.name})</span>
-                  <span>{shippingMethod.price.toFixed(2).replace('.', ',')}€</span>
+                {packSavings > 0 && (
+                  <div className="flex justify-between text-secondary font-medium">
+                    <span>Offre pack de 3</span>
+                    <span>−{packSavings.toFixed(2).replace('.', ',')}€</span>
+                  </div>
+                )}
+                <div className="flex justify-between text-green-600 font-medium">
+                  <span>Livraison ({SHIPPING_METHOD.name})</span>
+                  <span>Offerte</span>
                 </div>
                 {discountPct > 0 && (
                   <div className="flex justify-between text-green-600 font-medium">

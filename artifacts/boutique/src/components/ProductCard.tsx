@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
 import { useToast } from '@/hooks/use-toast';
-import { product } from '../data/products';
+import { product, PACK_QTY, PACK_PRICE } from '../data/products';
 import { Check } from 'lucide-react';
 import heroImg from '@assets/file_00000000f03871f48778e9563a14b77b_1783972257984.png';
 
@@ -47,9 +47,14 @@ export const ProductCard = () => {
               {product.name}
             </h3>
           </Link>
-          <span className="font-semibold text-lg text-primary whitespace-nowrap ml-4">
-            {product.price.toFixed(2).replace('.', ',')}€
-          </span>
+          <div className="text-right ml-4">
+            <span className="font-semibold text-lg text-primary whitespace-nowrap block">
+              {product.price.toFixed(2).replace('.', ',')}€
+            </span>
+            <span className="text-xs text-secondary font-medium">
+              Pack de {PACK_QTY} : {PACK_PRICE}€
+            </span>
+          </div>
         </div>
         <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
           {product.shortDescription}

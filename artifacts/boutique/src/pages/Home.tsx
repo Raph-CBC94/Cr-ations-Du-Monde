@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { Heart, Package, Shield, Truck } from 'lucide-react';
+import { Heart, Package, Shield, Truck, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '../components/ProductCard';
 
@@ -121,20 +121,20 @@ export default function Home() {
       </section>
 
       
-      {/* SHIPPING INFO */}
+      {/* SHIPPING & PACK INFO */}
       <section className="py-16 bg-muted border-t border-border/50">
-        <div className="container mx-auto px-4 max-w-3xl text-center">
-          <h3 className="font-serif text-2xl text-primary mb-8">Informations de livraison</h3>
+        <div className="container mx-auto px-4 max-w-4xl text-center">
+          <h3 className="font-serif text-2xl text-primary mb-8">Offres & Livraison</h3>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <div className="bg-background p-6 rounded-xl border border-border/50 flex-1 shadow-sm">
-              <span className="font-bold text-primary block mb-2">Mondial Relay</span>
-              <span className="text-2xl font-serif text-secondary block mb-2">3,90€</span>
-              <p className="text-sm text-foreground/70">Livraison en point relais<br/>sous 3-5 jours ouvrés</p>
+              <span className="font-bold text-primary block mb-2">Pack de 3</span>
+              <span className="text-2xl font-serif text-secondary block mb-2">50€</span>
+              <p className="text-sm text-foreground/70">Économisez 10€<br/>soit 16,67€ l'unité</p>
             </div>
             <div className="bg-background p-6 rounded-xl border border-border/50 flex-1 shadow-sm">
-              <span className="font-bold text-primary block mb-2">La Poste Colissimo</span>
-              <span className="text-2xl font-serif text-secondary block mb-2">5,90€</span>
-              <p className="text-sm text-foreground/70">Livraison à domicile<br/>sous 2-3 jours ouvrés</p>
+              <span className="font-bold text-primary block mb-2">Livraison</span>
+              <span className="text-2xl font-serif text-secondary block mb-2">Offerte</span>
+              <p className="text-sm text-foreground/70">En point relais Mondial Relay<br/>sous 3-5 jours ouvrés</p>
             </div>
           </div>
         </div>

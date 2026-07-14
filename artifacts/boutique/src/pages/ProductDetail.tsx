@@ -91,6 +91,9 @@ export default function ProductDetail() {
               </button>
             ))}
           </div>
+          <p className="text-xs text-muted-foreground italic text-center">
+            Visuels générés par intelligence artificielle — ils représentent fidèlement la forme, les couleurs et le rendu de notre création artisanale.
+          </p>
         </div>
 
         {/* Product Info */}

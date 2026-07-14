@@ -85,6 +85,9 @@ export default function Home() {
               <span className="bg-accent/30 text-primary px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Édition Limitée</span>
             </div>
             <h2 className="font-serif text-4xl text-primary mb-6">Notre pièce signature</h2>
+            <p className="text-xs text-muted-foreground italic mb-6">
+              Visuels générés par intelligence artificielle — ils représentent fidèlement la forme, les couleurs et le rendu de notre création artisanale.
+            </p>
             <ProductCard />
           </div>
         </div>

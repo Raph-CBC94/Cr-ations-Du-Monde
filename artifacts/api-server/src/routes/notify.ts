@@ -153,7 +153,7 @@ router.post("/notify-order", async (req, res) => {
 
     <!-- Footer -->
     <div style="background:#fdf4ee;padding:20px 40px;text-align:center;border-top:1px solid #f0e8e0;">
-      <p style="margin:0;font-size:12px;color:#aaa;">Créations du Monde • raphanoute.lecuyer94@gmail.com</p>
+      <p style="margin:0;font-size:12px;color:#aaa;">Créations du Monde • creationsdumonde9@gmail.com</p>
     </div>
   </div>
 </body>
@@ -164,7 +164,7 @@ router.post("/notify-order", async (req, res) => {
   try {
     const result = await resend.emails.send({
       from: "Créations du Monde <onboarding@resend.dev>",
-      to: ["raphanoute.lecuyer94@gmail.com"],
+      to: ["creationsdumonde9@gmail.com"],
       reply_to: customer.email,
       subject: `Nouvelle commande - ${customer.firstName} ${customer.lastName} - ${total.toFixed(2).replace(".", ",")}EUR`,
       html,

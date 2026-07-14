@@ -24,8 +24,8 @@ export const Footer = () => {
 
           <div className="flex flex-col gap-4 items-center md:items-start">
             <h4 className="font-serif text-lg text-primary">Contact et confiance</h4>
-            <a href="mailto:raphanoute.lecuyer94@gmail.com" className="text-sm text-foreground/70 hover:text-secondary transition-colors flex items-center gap-2">
-              <Mail className="h-4 w-4" /> raphanoute.lecuyer94@gmail.com
+            <a href="mailto:creationsdumonde9@gmail.com" className="text-sm text-foreground/70 hover:text-secondary transition-colors flex items-center gap-2">
+              <Mail className="h-4 w-4" /> creationsdumonde9@gmail.com
             </a>
             <div className="flex gap-4 mt-2">
               <div className="flex items-center gap-1 text-xs text-foreground/60">

@@ -1,0 +1,54 @@
+[
+  {
+    "customer": {
+      "firstName": "Test",
+      "lastName": "Client",
+      "email": "client@example.com",
+      "address": "123 rue des Fleurs",
+      "postalCode": "75000",
+      "city": "Paris",
+      "country": "France"
+    },
+    "items": [
+      {
+        "name": "Cache-Cou Fleuri",
+        "quantity": 2,
+        "price": 19.99
+      }
+    ],
+    "shippingMethod": {
+      "name": "Mondial Relay",
+      "price": 0
+    },
+    "subtotal": 39.98,
+    "total": 39.98,
+    "createdAt": "2026-07-14T07:53:38.773Z",
+    "emailStatus": "sent: 13444c3c-0182-46a7-8504-0c350162d49f"
+  },
+  {
+    "customer": {
+      "firstName": "Test",
+      "lastName": "Client",
+      "email": "client@example.com",
+      "address": "123 rue des Fleurs",
+      "postalCode": "75000",
+      "city": "Paris",
+      "country": "France"
+    },
+    "items": [
+      {
+        "name": "Cache-Cou Fleuri",
+        "quantity": 2,
+        "price": 19.99
+      }
+    ],
+    "shippingMethod": {
+      "name": "Mondial Relay",
+      "price": 0
+    },
+    "subtotal": 39.98,
+    "total": 39.98,
+    "createdAt": "2026-07-14T07:53:26.665Z",
+    "emailStatus": "sent: b9a53431-7593-4d2e-8b90-a67bdcd593c6"
+  }
+]

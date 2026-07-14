@@ -315,7 +315,7 @@ export default function Paiement() {
                                 shipping: { currency_code: "EUR", value: "0.00" },
                               },
                             },
-                            payee: { email_address: "raphanoute.lecuyer94@gmail.com" },
+                            payee: { email_address: "creationsdumonde9@gmail.com" },
                           }],
                         })}
                         onApprove={handlePayPalApprove}

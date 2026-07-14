@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { Heart, Package, Shield, Gift } from 'lucide-react';
+import { Heart, Package, Shield, Truck, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '../components/ProductCard';
-import { PACK_PRICE, PACK_QTY } from '../data/products';
+import { PACK_PRICE, PACK_QTY, UNIT_PRICE } from '../data/products';
 
 import heroImg from '@assets/file_00000000f03871f48778e9563a14b77b_1783972257984.png';
 import flatLayC from '@assets/Screenshot_2026-07-13-21-35-56-699_com.openai.chatgpt-edit_1783972258308.jpg';
@@ -98,7 +98,7 @@ export default function Home() {
       <section className="py-24 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4">
           <h2 className="font-serif text-3xl md:text-4xl text-center mb-16">Simple & Rassurant</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-center max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center max-w-4xl mx-auto">
             <div className="flex flex-col items-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mb-4 text-secondary">
                 <Package className="w-8 h-8" />
@@ -113,10 +113,32 @@ export default function Home() {
               <h3 className="font-serif text-xl">2. Commandez en sécurité</h3>
               <p className="text-primary-foreground/70 text-sm">Paiement sécurisé via PayPal, avec protection des achats.</p>
             </div>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mb-4 text-secondary">
+                <Truck className="w-8 h-8" />
+              </div>
+              <h3 className="font-serif text-xl">3. Recevez avec soin</h3>
+              <p className="text-primary-foreground/70 text-sm">Expédition soignée depuis notre atelier français en 48h.</p>
+            </div>
           </div>
         </div>
       </section>
 
+      
+      {/* PACK OFFER INFO */}
+      <section className="py-16 bg-muted border-t border-border/50">
+        <div className="container mx-auto px-4 max-w-2xl text-center">
+          <h3 className="font-serif text-2xl text-primary mb-8">Offre spéciale</h3>
+          <div className="bg-background p-6 rounded-xl border border-border/50 shadow-sm">
+            <span className="font-bold text-primary block mb-2">Pack de {PACK_QTY}</span>
+            <span className="text-2xl font-serif text-secondary block mb-2">{PACK_PRICE.toFixed(2).replace('.', ',')}€</span>
+            <p className="text-sm text-foreground/70">
+              Économisez {((PACK_QTY * UNIT_PRICE) - PACK_PRICE).toFixed(2).replace('.', ',')}€<br/>
+              soit {(PACK_PRICE / PACK_QTY).toFixed(2).replace('.', ',')}€ l'unité
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
 import { useToast } from '@/hooks/use-toast';
-import { product, PACK_QTY, PACK_PRICE } from '../data/products';
+import { product, PACK_QTY, PACK_PRICE, getPackSavings } from '../data/products';
 import { Check } from 'lucide-react';
 import heroImg from '@assets/file_00000000f03871f48778e9563a14b77b_1783972257984.png';
 

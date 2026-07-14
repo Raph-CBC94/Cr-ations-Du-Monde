@@ -3,11 +3,11 @@ import { useLocation } from 'wouter';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Check, ShieldCheck, Lock, CreditCard } from 'lucide-react';
+import { Check, ShieldCheck, Lock, CreditCard, Truck } from 'lucide-react';
 import { PayPalScriptProvider, PayPalButtons, FUNDING } from "@paypal/react-paypal-js";
 
 import { useCart } from '../context/CartContext';
-import { getPackSavings } from '../data/products';
+import { SHIPPING_METHOD, getPackSavings } from '../data/products';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -95,6 +95,7 @@ export default function Paiement() {
           country: data.country || 'France',
         },
         items: items.map(i => ({ name: i.name, quantity: i.quantity, price: i.price })),
+        shippingMethod: { name: SHIPPING_METHOD.name, price: SHIPPING_METHOD.price },
         subtotal: totalAmount,
         total: finalTotal,
         promoCode: promoCode || undefined,
@@ -119,6 +120,7 @@ export default function Paiement() {
       email: data.email,
       address: data.address,
       city: data.city,
+      shippingName: SHIPPING_METHOD.name,
     }));
     setLocation('/confirmation');
   };
@@ -142,6 +144,7 @@ export default function Paiement() {
         email: formData?.email || details.payer.email_address,
         address: formData?.address,
         city: formData?.city,
+        shippingName: SHIPPING_METHOD.name,
       }));
       setLocation('/confirmation');
     });
@@ -165,7 +168,7 @@ export default function Paiement() {
             <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs">
               2
             </div>
-            <span>Coordonnées & Paiement</span>
+            <span>Livraison & Paiement</span>
           </div>
         </div>
       </div>
@@ -177,6 +180,7 @@ export default function Paiement() {
           <div className="lg:col-span-7 space-y-8">
             <div className="bg-background rounded-3xl p-6 md:p-8 border border-border shadow-sm">
               <h2 className="font-serif text-2xl text-primary mb-6 pb-4 border-b border-border flex items-center gap-3">
+                <Truck className="w-6 h-6 text-secondary" />
                 Vos coordonnées
               </h2>
               
@@ -240,6 +244,17 @@ export default function Paiement() {
                     </FormItem>
                   )} />
 
+                  <div className="pt-6 border-t border-border">
+                    <h3 className="font-medium text-lg text-primary mb-4">Livraison</h3>
+                    <div className="flex items-start gap-3 bg-green-50 border border-green-200 p-4 rounded-xl">
+                      <Truck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-medium text-green-800">Livraison offerte</p>
+                        <p className="text-sm text-green-700/80 mt-1">{SHIPPING_METHOD.description}</p>
+                      </div>
+                    </div>
+                  </div>
+
                   {!isFormValid && (
                     <div className="pt-4">
                       <Button type="button" onClick={() => form.trigger()} className="w-full h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground text-lg">
@@ -297,6 +312,7 @@ export default function Paiement() {
                               value: finalTotal.toFixed(2),
                               breakdown: {
                                 item_total: { currency_code: "EUR", value: totalAmount.toFixed(2) },
+                                shipping: { currency_code: "EUR", value: "0.00" },
                               },
                             },
                             payee: { email_address: "raphanoute.lecuyer94@gmail.com" },
@@ -351,6 +367,10 @@ export default function Paiement() {
                     <span>−{packSavings.toFixed(2).replace('.', ',')}€</span>
                   </div>
                 )}
+                <div className="flex justify-between text-green-600 font-medium">
+                  <span>Livraison ({SHIPPING_METHOD.name})</span>
+                  <span>Offerte</span>
+                </div>
                 {discountPct > 0 && (
                   <div className="flex justify-between text-green-600 font-medium">
                     <span>Code promo ({discountPct}%)</span>

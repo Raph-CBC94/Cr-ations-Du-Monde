@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { Check, Heart, Mail, PackageOpen } from 'lucide-react';
+import { Check, Heart, Mail, PackageOpen, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Confirmation() {
@@ -19,7 +19,8 @@ export default function Confirmation() {
         name: "",
         email: "",
         address: "",
-        city: ""
+        city: "",
+        shippingName: "Mondial Relay"
       });
     }
   }, []);
@@ -49,6 +50,28 @@ export default function Confirmation() {
         <p className="text-lg text-foreground/80 mb-10 max-w-lg mx-auto leading-relaxed">
           Votre commande a bien été prise en compte. Nous préparons votre création avec soin.
         </p>
+
+        <div className="bg-muted/30 rounded-2xl p-6 text-left mb-10 border border-border/50">
+          <h2 className="font-serif text-xl text-primary mb-4 flex items-center gap-2">
+            <PackageOpen className="w-5 h-5 text-secondary" />
+            Détails de l'expédition
+          </h2>
+          <div className="space-y-3 text-sm text-foreground/80">
+            <div className="grid grid-cols-3 gap-2 items-center">
+              <span className="text-muted-foreground">Méthode</span>
+              <span className="col-span-2 font-medium text-primary flex items-center gap-2">
+                {orderData.shippingName}
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Offerte</span>
+              </span>
+            </div>
+            {orderData.address && (
+              <div className="grid grid-cols-3 gap-2 border-t border-border/30 pt-3">
+                <span className="text-muted-foreground">Adresse</span>
+                <span className="col-span-2">{orderData.address}, {orderData.city}</span>
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="flex items-center justify-center gap-3 text-sm text-muted-foreground mb-10 bg-accent/20 py-4 px-6 rounded-xl inline-flex mx-auto">
           <Mail className="w-5 h-5 text-accent-foreground" />

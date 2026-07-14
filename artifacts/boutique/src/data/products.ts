@@ -1,6 +1,6 @@
-export const UNIT_PRICE = 20;
+export const UNIT_PRICE = 19.99;
 export const PACK_QTY = 3;
-export const PACK_PRICE = 50;
+export const PACK_PRICE = 49.99;
 
 export function getTotalPrice(quantity: number): number {
   const packs = Math.floor(quantity / PACK_QTY);
@@ -11,8 +11,6 @@ export function getTotalPrice(quantity: number): number {
 export function getPackSavings(quantity: number): number {
   return quantity * UNIT_PRICE - getTotalPrice(quantity);
 }
-
-export const SHIPPING_METHOD = { id: "mondial_relay", name: "Mondial Relay", price: 0, description: "Livraison offerte en point relais sous 3-5 jours ouvrés" };
 
 export const product = {
   id: "cache-cou-thyroide",
@@ -27,6 +25,5 @@ export const product = {
     "Taille unique — s'adapte parfaitement",
     "Lavable à 30°",
     "Fabriqué avec amour en France"
-  ],
-  shipping: "Livraison offerte en point relais Mondial Relay. Informations à renseigner lors du paiement."
+  ]
 };

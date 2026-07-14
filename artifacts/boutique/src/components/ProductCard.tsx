@@ -52,7 +52,7 @@ export const ProductCard = () => {
               {product.price.toFixed(2).replace('.', ',')}€
             </span>
             <span className="text-xs text-secondary font-medium">
-              Pack de {PACK_QTY} : {PACK_PRICE}€
+              Pack de {PACK_QTY} : {PACK_PRICE.toFixed(2).replace('.', ',')}€
             </span>
           </div>
         </div>

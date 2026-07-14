@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import { Trash2, Minus, Plus, ArrowRight, ShoppingBag, ShieldCheck, Tag, X, Check, Gift, Truck } from 'lucide-react';
+import { Trash2, Minus, Plus, ArrowRight, ShoppingBag, ShieldCheck, Tag, X, Check, Gift } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { Button } from '@/components/ui/button';
-import { SHIPPING_METHOD, getPackSavings } from '../data/products';
+import { PACK_PRICE, PACK_QTY, getPackSavings } from '../data/products';
 import { Input } from "@/components/ui/input";
 
 const PROMO_CODES: Record<string, { discount: number; label: string }> = {
@@ -171,15 +171,8 @@ export default function Panier() {
               <div className="flex items-start gap-3 bg-secondary/5 border border-secondary/20 p-4 rounded-xl">
                 <Gift className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-medium text-primary">Pack de 3 pour 50€</p>
-                  <p className="text-xs text-muted-foreground mt-1">Économisez 10€ dès 3 cache-cous achetés.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3 bg-green-50 border border-green-200 p-4 rounded-xl mt-3">
-                <Truck className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-medium text-green-800">Livraison offerte</p>
-                  <p className="text-xs text-green-700/80 mt-1">{SHIPPING_METHOD.description}</p>
+                  <p className="font-medium text-primary">Pack de {PACK_QTY} pour {PACK_PRICE.toFixed(2).replace('.', ',')}€</p>
+                  <p className="text-xs text-muted-foreground mt-1">Économisez {getPackSavings(PACK_QTY).toFixed(2).replace('.', ',')}€ dès {PACK_QTY} cache-cous achetés.</p>
                 </div>
               </div>
             </div>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useRoute, Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { Heart, Minus, Plus, ShoppingBag, ShieldCheck, Truck, RefreshCw, Gift } from 'lucide-react';
+import { Heart, Minus, Plus, ShoppingBag, ShieldCheck, RefreshCw, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
 import { useToast } from '@/hooks/use-toast';
-import { product, PACK_QTY, PACK_PRICE } from '../data/products';
+import { product, PACK_QTY, PACK_PRICE, UNIT_PRICE, getPackSavings } from '../data/products';
 import {
   Accordion,
   AccordionContent,
@@ -109,7 +109,7 @@ export default function ProductDetail() {
               {product.price.toFixed(2).replace('.', ',')}€
             </div>
             <div className="mt-2 inline-flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1 rounded-full text-sm font-medium">
-              <span>Pack de {PACK_QTY} : {PACK_PRICE}€ — économisez 10€</span>
+              <span>Pack de {PACK_QTY} : {PACK_PRICE.toFixed(2).replace('.', ',')}€ — économisez {getPackSavings(PACK_QTY).toFixed(2).replace('.', ',')}€</span>
             </div>
           </div>
 
@@ -152,7 +152,7 @@ export default function ProductDetail() {
             </div>
             <div className="flex items-center gap-2 text-sm text-secondary mb-4">
               <Gift className="w-4 h-4" />
-              <span>3 pour 50€ — économisez 10€ dès 3 articles</span>
+              <span>{PACK_QTY} pour {PACK_PRICE.toFixed(2).replace('.', ',')}€ — économisez {getPackSavings(PACK_QTY).toFixed(2).replace('.', ',')}€ dès {PACK_QTY} articles</span>
             </div>
             
             <Button 
@@ -167,14 +167,10 @@ export default function ProductDetail() {
           </div>
 
           {/* Trust Badges */}
-          <div className="grid grid-cols-3 gap-4 mb-10 border-y border-border py-6">
+          <div className="grid grid-cols-2 gap-4 mb-10 border-y border-border py-6">
             <div className="flex flex-col items-center text-center gap-2 text-primary">
               <ShieldCheck className="h-6 w-6 text-secondary" />
               <span className="text-xs font-medium">Paiement 100% sécurisé</span>
-            </div>
-            <div className="flex flex-col items-center text-center gap-2 text-primary">
-              <Truck className="h-6 w-6 text-secondary" />
-              <span className="text-xs font-medium">Expédition sous 48h</span>
             </div>
             <div className="flex flex-col items-center text-center gap-2 text-primary">
               <RefreshCw className="h-6 w-6 text-secondary" />
@@ -195,13 +191,6 @@ export default function ProductDetail() {
                     </li>
                   ))}
                 </ul>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="shipping" className="border-border">
-              <AccordionTrigger className="font-serif text-lg text-primary hover:text-secondary">Livraison & Retours</AccordionTrigger>
-              <AccordionContent className="text-foreground/80 text-base leading-relaxed">
-                <p className="mb-3">{product.shipping}</p>
-                <p>Retours acceptés sous 14 jours si le produit n'a pas été porté (pour des raisons d'hygiène évidentes).</p>
               </AccordionContent>
             </AccordionItem>
           </Accordion>

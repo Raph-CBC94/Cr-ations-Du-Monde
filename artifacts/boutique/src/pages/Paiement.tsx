@@ -154,7 +154,7 @@ export default function Paiement() {
 
   return (
     <div className="bg-muted/30 min-h-screen pb-24">
-      {/* Checkout Progress Header */}
+      {/* En-tête de progression de la commande */}
       <div className="bg-background border-b border-border py-6 mb-8">
         <div className="container mx-auto px-4 flex items-center justify-center gap-4 text-sm font-medium">
           <div className="flex items-center gap-2 text-primary">
@@ -168,7 +168,7 @@ export default function Paiement() {
             <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs">
               2
             </div>
-            <span>Livraison & Paiement</span>
+            <span>Livraison et paiement</span>
           </div>
         </div>
       </div>
@@ -176,7 +176,7 @@ export default function Paiement() {
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
-          {/* Left Column: Form & Payment */}
+          {/* Colonne gauche : formulaire et paiement */}
           <div className="lg:col-span-7 space-y-8">
             <div className="bg-background rounded-3xl p-6 md:p-8 border border-border shadow-sm">
               <h2 className="font-serif text-2xl text-primary mb-6 pb-4 border-b border-border flex items-center gap-3">
@@ -270,7 +270,7 @@ export default function Paiement() {
             <div id="payment-section" className={`bg-background rounded-3xl p-6 md:p-8 border border-border shadow-sm transition-opacity duration-500 ${isFormValid ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
               <h2 className="font-serif text-2xl text-primary mb-2 flex items-center gap-3">
                 <CreditCard className="w-6 h-6 text-secondary" />
-                {isFree ? 'Commande gratuite 🎁' : 'Paiement Sécurisé'}
+                {isFree ? 'Commande gratuite 🎁' : 'Paiement sécurisé'}
               </h2>
               <p className="text-muted-foreground text-sm mb-6 pb-4 border-b border-border">
                 {isFree
@@ -279,7 +279,7 @@ export default function Paiement() {
               </p>
 
               {isFree ? (
-                /* FREE ORDER — bypass PayPal */
+                /* COMMANDE GRATUITE — contourne PayPal */
                 <Button
                   onClick={handleFreeOrder}
                   disabled={!isFormValid || freeOrderLoading}
@@ -288,7 +288,7 @@ export default function Paiement() {
                   {freeOrderLoading ? 'Traitement…' : '✓ Confirmer ma commande gratuite'}
                 </Button>
               ) : (
-                /* PAID ORDER — card via PayPal */
+                /* COMMANDE PAYANTE — carte via PayPal */
                 <>
                   {paypalClientId === "test" && (
                     <div className="bg-accent/20 border border-accent p-4 rounded-xl mb-6 text-sm text-foreground/80">
@@ -334,7 +334,7 @@ export default function Paiement() {
 
           </div>
 
-          {/* Right Column: Order Recap */}
+          {/* Colonne droite : récapitulatif de la commande */}
           <div className="lg:col-span-5">
             <div className="bg-primary/5 rounded-3xl p-6 lg:p-8 border border-primary/10 sticky top-28">
               <h3 className="font-serif text-xl text-primary mb-6">Résumé de la commande</h3>

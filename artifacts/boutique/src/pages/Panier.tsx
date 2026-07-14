@@ -69,10 +69,10 @@ export default function Panier() {
 
   return (
     <div className="container mx-auto px-4 py-12 md:py-24">
-      <h1 className="font-serif text-3xl md:text-4xl text-primary mb-10">Mon Panier</h1>
+      <h1 className="font-serif text-3xl md:text-4xl text-primary mb-10">Mon panier</h1>
 
       <div className="flex flex-col lg:flex-row gap-12">
-        {/* Cart Items List */}
+        {/* Liste des articles du panier */}
         <div className="flex-1 space-y-6">
           <div className="hidden md:grid grid-cols-12 gap-4 pb-4 border-b border-border text-sm font-medium text-muted-foreground">
             <div className="col-span-6">Produit</div>
@@ -153,7 +153,7 @@ export default function Panier() {
           </div>
         </div>
 
-        {/* Order Summary */}
+        {/* Récapitulatif de la commande */}
         <div className="w-full lg:w-[400px] shrink-0">
           <div className="bg-card border border-border rounded-3xl p-6 lg:p-8 shadow-sm sticky top-28 space-y-6">
             <h2 className="font-serif text-2xl text-primary">Récapitulatif</h2>

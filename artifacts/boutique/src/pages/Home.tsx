@@ -13,7 +13,7 @@ import flatLayO from '@assets/Screenshot_2026-07-13-21-35-45-069_com.openai.chat
 export default function Home() {
   return (
     <div className="flex flex-col w-full overflow-hidden">
-      {/* HERO SECTION */}
+      {/* SECTION HERO */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
@@ -32,7 +32,7 @@ export default function Home() {
             className="space-y-6"
           >
             <span className="inline-block py-1 px-3 rounded-full bg-secondary/10 text-secondary text-sm font-medium tracking-wide">
-              Artisanat Français
+              Artisanat français
             </span>
             <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-tight text-primary">
               Reprenez confiance,<br/> <span className="italic text-secondary">avec grâce.</span>
@@ -51,7 +51,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* EMPATHY SECTION */}
+      {/* SECTION EMPATHIE */}
       <section className="py-24 bg-muted/30 relative">
         <div className="container mx-auto px-4 max-w-3xl text-center space-y-8">
           <Heart className="w-12 h-12 mx-auto text-secondary opacity-80" strokeWidth={1.5} />
@@ -64,7 +64,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* PRODUCT SHOWCASE */}
+      {/* VITRINE PRODUIT */}
       <section className="py-24 container mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-16 items-center">
           <div className="w-full md:w-1/2 flex gap-4">
@@ -83,7 +83,7 @@ export default function Home() {
           
           <div className="w-full md:w-1/2">
             <div className="mb-4 flex items-center gap-2">
-              <span className="bg-accent/30 text-primary px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Édition Limitée</span>
+              <span className="bg-accent/30 text-primary px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Édition limitée</span>
             </div>
             <h2 className="font-serif text-4xl text-primary mb-6">Notre pièce signature</h2>
             <p className="text-xs text-muted-foreground italic mb-6">
@@ -94,10 +94,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* COMMENT ÇA MARCHE */}
       <section className="py-24 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4">
-          <h2 className="font-serif text-3xl md:text-4xl text-center mb-16">Simple & Rassurant</h2>
+          <h2 className="font-serif text-3xl md:text-4xl text-center mb-16">Simple et rassurant</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center max-w-4xl mx-auto">
             <div className="flex flex-col items-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center mb-4 text-secondary">
@@ -125,7 +125,7 @@ export default function Home() {
       </section>
 
       
-      {/* PACK OFFER INFO */}
+      {/* INFO OFFRE PACK */}
       <section className="py-16 bg-muted border-t border-border/50">
         <div className="container mx-auto px-4 max-w-2xl text-center">
           <h3 className="font-serif text-2xl text-primary mb-8">Offre spéciale</h3>

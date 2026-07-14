@@ -11,7 +11,7 @@ export default function Confirmation() {
     const data = sessionStorage.getItem('lastOrder');
     if (data) {
       setOrderData(JSON.parse(data));
-      // Optionally clear it so a refresh doesn't keep showing it forever
+      // Effacer éventuellement pour ne pas réafficher indéfiniment au rafraîchissement
       // sessionStorage.removeItem('lastOrder');
     } else {
       // Fallback si visite directe
@@ -80,7 +80,7 @@ export default function Confirmation() {
 
         <div className="flex flex-col items-center gap-6">
           <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-10 h-14 text-lg shadow-md transition-all">
-            <Link href="/">Retourner à l'accueil</Link>
+            <Link href="/">Retour à l'accueil</Link>
           </Button>
           
           <div className="flex items-center gap-2 text-sm text-secondary font-medium italic">

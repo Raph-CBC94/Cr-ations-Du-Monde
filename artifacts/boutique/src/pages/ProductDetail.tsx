@@ -56,7 +56,7 @@ export default function ProductDetail() {
   return (
     <div className="container mx-auto px-4 py-12 md:py-24">
       
-      {/* Breadcrumb */}
+      {/* Fil d'Ariane */}
       <div className="text-sm text-muted-foreground mb-8">
         <Link href="/" className="hover:text-primary transition-colors">Accueil</Link>
         <span className="mx-2">/</span>
@@ -65,7 +65,7 @@ export default function ProductDetail() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
         
-        {/* Images Gallery */}
+        {/* Galerie d'images */}
         <div className="space-y-4">
           <div className="aspect-square rounded-2xl overflow-hidden bg-muted border border-border/50 relative">
             <motion.img 
@@ -96,7 +96,7 @@ export default function ProductDetail() {
           </p>
         </div>
 
-        {/* Product Info */}
+        {/* Informations produit */}
         <div className="flex flex-col">
           <div className="mb-6">
             <span className="inline-block py-1 px-3 rounded-full bg-secondary/10 text-secondary text-xs font-bold tracking-wide uppercase mb-4">
@@ -117,10 +117,10 @@ export default function ProductDetail() {
             {product.description}
           </p>
 
-          {/* Action Area */}
+          {/* Zone d'action */}
           <div className="bg-card p-6 rounded-2xl border border-border/60 shadow-sm mb-10">
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
-              {/* Qty Selector */}
+              {/* Sélecteur de quantité */}
               <div className="flex items-center justify-between border border-border rounded-full p-1 bg-background sm:w-1/3">
                 <Button 
                   variant="ghost" 
@@ -141,7 +141,7 @@ export default function ProductDetail() {
                 </Button>
               </div>
 
-              {/* Add to Cart */}
+              {/* Ajouter au panier */}
               <Button 
                 onClick={handleAddToCart}
                 className="flex-1 rounded-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground shadow-md transition-all text-base"
@@ -166,7 +166,7 @@ export default function ProductDetail() {
             </Button>
           </div>
 
-          {/* Trust Badges */}
+          {/* Badges de confiance */}
           <div className="grid grid-cols-3 gap-4 mb-10 border-y border-border py-6">
             <div className="flex flex-col items-center text-center gap-2 text-primary">
               <ShieldCheck className="h-6 w-6 text-secondary" />
@@ -182,7 +182,7 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          {/* Accordions */}
+          {/* Accordéons */}
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="details" className="border-border">
               <AccordionTrigger className="font-serif text-lg text-primary hover:text-secondary">Caractéristiques</AccordionTrigger>
@@ -198,7 +198,7 @@ export default function ProductDetail() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="shipping" className="border-border">
-              <AccordionTrigger className="font-serif text-lg text-primary hover:text-secondary">Livraison & Retours</AccordionTrigger>
+              <AccordionTrigger className="font-serif text-lg text-primary hover:text-secondary">Livraison et retours</AccordionTrigger>
               <AccordionContent className="text-foreground/80 text-base leading-relaxed">
                 <p className="mb-3">{product.shipping}</p>
                 <p>Retours acceptés sous 14 jours si le produit n'a pas été porté (pour des raisons d'hygiène évidentes).</p>

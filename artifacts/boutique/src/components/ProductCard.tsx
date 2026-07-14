@@ -36,7 +36,7 @@ export const ProductCard = () => {
           className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute top-4 right-4 bg-background/90 backdrop-blur text-primary text-xs px-3 py-1 rounded-full font-medium border border-border">
-          Fait-main
+          Fait main
         </div>
       </Link>
       

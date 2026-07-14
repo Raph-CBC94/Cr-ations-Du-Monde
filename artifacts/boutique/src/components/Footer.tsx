@@ -16,20 +16,20 @@ export const Footer = () => {
           </div>
 
           <div className="flex flex-col gap-2 items-center md:items-start">
-            <h4 className="font-serif text-lg text-primary mb-2">Liens Rapides</h4>
+            <h4 className="font-serif text-lg text-primary mb-2">Liens rapides</h4>
             <Link href="/" className="text-sm text-foreground/70 hover:text-secondary transition-colors">Accueil</Link>
             <Link href="/produit/cache-cou-thyroide" className="text-sm text-foreground/70 hover:text-secondary transition-colors">Le Produit</Link>
             <Link href="/panier" className="text-sm text-foreground/70 hover:text-secondary transition-colors">Panier</Link>
           </div>
 
           <div className="flex flex-col gap-4 items-center md:items-start">
-            <h4 className="font-serif text-lg text-primary">Contact & Confiance</h4>
+            <h4 className="font-serif text-lg text-primary">Contact et confiance</h4>
             <a href="mailto:raphanoute.lecuyer94@gmail.com" className="text-sm text-foreground/70 hover:text-secondary transition-colors flex items-center gap-2">
               <Mail className="h-4 w-4" /> raphanoute.lecuyer94@gmail.com
             </a>
             <div className="flex gap-4 mt-2">
               <div className="flex items-center gap-1 text-xs text-foreground/60">
-                <ShieldCheck className="h-4 w-4 text-primary" /> Paiement Sécurisé
+                <ShieldCheck className="h-4 w-4 text-primary" /> Paiement sécurisé
               </div>
             </div>
             <div className="text-xs text-foreground/50 mt-4">

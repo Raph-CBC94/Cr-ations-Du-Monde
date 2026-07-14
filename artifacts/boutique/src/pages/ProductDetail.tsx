@@ -48,8 +48,8 @@ export default function ProductDetail() {
     
     toast({
       title: "Ajouté au panier",
-      description: `${quantity}x ${product.name} ajouté(s).`,
-      className: "bg-background border-secondary text-primary",
+      description: `${quantity} article${quantity > 1 ? 's' : ''} ajouté${quantity > 1 ? 's' : ''}. Votre panier est en bas de page.`,
+      variant: "success",
     });
   };
 

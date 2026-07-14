@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import { product, PACK_QTY, PACK_PRICE, getPackSavings } from '../data/products';
-import { Check } from 'lucide-react';
+import { Check, ShoppingBag } from 'lucide-react';
 import heroImg from '@assets/file_00000000f03871f48778e9563a14b77b_1783972257984.png';
 
 export const ProductCard = () => {
@@ -22,8 +22,8 @@ export const ProductCard = () => {
     
     toast({
       title: "Ajouté au panier",
-      description: "Le cache-cou a été ajouté à votre panier avec succès.",
-      className: "bg-background border-secondary text-primary",
+      description: "Votre création vous attend en bas de page.",
+      variant: "success",
     });
   };
 

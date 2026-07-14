@@ -1,3 +1,12 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" rx="48" fill="#7d3c5a"/>
+  <circle cx="96" cy="82" r="36" fill="#a8607a"/>
+  <path d="M96 58c-8 0-15 4-19 10-2 3-3 6-3 10 0 8 5 15 12 18 2 1 4 1 6 1h8c2 0 4 0 6-1 7-3 12-10 12-18 0-4-1-7-3-10-4-6-11-10-19-10z" fill="#fdf4ee"/>
+  <circle cx="82" cy="76" r="5" fill="#7d3c5a"/>
+  <circle cx="110" cy="76" r="5" fill="#7d3c5a"/>
+  <path d="M90 88c2 3 10 3 12 0" stroke="#7d3c5a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M72 118c0 18 16 34 24 34s24-16 24-34" stroke="#fdf4ee" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M96 152v14" stroke="#fdf4ee" stroke-width="6" stroke-linecap="round"/>
+  <path d="M72 134c-8 4-14 12-14 22" stroke="#fdf4ee" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M120 134c8 4 14 12 14 22" stroke="#fdf4ee" stroke-width="5" stroke-linecap="round" fill="none"/>
 </svg>

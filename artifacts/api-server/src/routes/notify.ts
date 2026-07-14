@@ -1,7 +1,33 @@
 import { Router } from "express";
 import { Resend } from "resend";
+import { writeFile, readFile, mkdir } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import path from "node:path";
 
 const router = Router();
+
+const ORDERS_FILE = path.resolve(process.cwd(), "data", "orders.json");
+
+async function saveOrder(order: NotifyOrderBody & { createdAt: string; emailStatus: string }) {
+  try {
+    await mkdir(path.dirname(ORDERS_FILE), { recursive: true });
+    let orders: Array<typeof order> = [];
+    if (existsSync(ORDERS_FILE)) {
+      const raw = await readFile(ORDERS_FILE, "utf-8");
+      orders = JSON.parse(raw);
+    }
+    orders.unshift(order);
+    await writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2));
+  } catch (err) {
+    console.error("Failed to save order:", err);
+  }
+}
+
+function getOrderStatus(resendResult: any) {
+  if (resendResult?.error) return `resend_error: ${resendResult.error.message || resendResult.error.name}`;
+  if (resendResult?.data?.id) return `sent: ${resendResult.data.id}`;
+  return "unknown";
+}
 
 interface OrderItem {
   name: string;
@@ -133,6 +159,8 @@ router.post("/notify-order", async (req, res) => {
 </body>
 </html>`;
 
+  const orderRecord = { ...body, createdAt: new Date().toISOString(), emailStatus: "pending" };
+
   try {
     const result = await resend.emails.send({
       from: "Créations du Monde <onboarding@resend.dev>",
@@ -142,9 +170,12 @@ router.post("/notify-order", async (req, res) => {
       html,
     });
 
+    orderRecord.emailStatus = getOrderStatus(result);
+    await saveOrder(orderRecord);
+
     if (result.error) {
       console.error("Resend error:", JSON.stringify(result.error));
-      res.status(500).json({ error: result.error.message });
+      res.status(202).json({ success: true, warning: "Commande enregistrée, mais l'email n'a pas pu être envoyé.", emailError: result.error.message });
       return;
     }
 
@@ -152,7 +183,23 @@ router.post("/notify-order", async (req, res) => {
     res.json({ success: true, emailId: result.data?.id });
   } catch (err) {
     console.error("Email send failed:", err);
-    res.status(500).json({ error: "Échec de l'envoi de l'email" });
+    orderRecord.emailStatus = `exception: ${(err as Error).message}`;
+    await saveOrder(orderRecord);
+    res.status(202).json({ success: true, warning: "Commande enregistrée, mais l'email n'a pas pu être envoyé.", emailError: (err as Error).message });
+  }
+});
+
+router.get("/admin/orders", async (_req, res) => {
+  try {
+    if (!existsSync(ORDERS_FILE)) {
+      res.json([]);
+      return;
+    }
+    const raw = await readFile(ORDERS_FILE, "utf-8");
+    res.json(JSON.parse(raw));
+  } catch (err) {
+    console.error("Failed to read orders:", err);
+    res.status(500).json({ error: "Impossible de lire les commandes" });
   }
 });
 
